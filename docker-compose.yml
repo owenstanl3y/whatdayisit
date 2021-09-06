@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  nuxt:
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    restart: always
+    ports:
+      - "2000:2000"
+    command:
+      "npm run start"
+
+  db:
+    image: mariadb:latest
+    restart: always
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    ports:
+      - "3306:3306"
