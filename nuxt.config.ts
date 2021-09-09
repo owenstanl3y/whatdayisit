@@ -1,5 +1,4 @@
 import { NuxtConfig } from "@nuxt/types";
-require('dotenv').config()
 
 export default <NuxtConfig> {
   // Global page headers: https://go.nuxtjs.dev/config-head

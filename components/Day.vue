@@ -27,8 +27,7 @@ export default Vue.extend({
   data() {
     return {
       body: {},
-      dayType: {} as DayType,
-      hasFetched: false
+      dayType: {} as DayType
     }
   },
   methods: {
@@ -42,38 +41,26 @@ export default Vue.extend({
       }
       return ""
     },
-    getBody(hs: boolean): String {
+    getBody(): String {
       const rD = this.$props.date;
       let s = rD.toLocaleDateString( "locale", { weekday: 'long' }) + " the " + this.dateOrdinal(rD.getDate()) + " of " + rD.toLocaleDateString( "locale", { month: 'long' });
       if (rD.getDay() === 6 || rD.getDay() === 0) {
         s += " is a weekend enjoy!"
-      } else if (!hs) {
+      } else if (!this.dayType.has_school) {
         s += " there's no school!"
-      } else if (this.hasFetched) {
+      } else if (this.dayType.normal) {
         s += ` is a ${this.dayType.type} day`;
       }
       return s;
     },
     dateOrdinal(d: number) {
       return d+(31==d||21==d||1==d?"st":22==d||2==d?"nd":23==d||3==d?"rd":"th")
-    },
-
-    async fetchData() {
-      this.dayType = await fetch(`/api/v1/dates/${this.$props.date.toISOString().substring(0, 10)}`).then(response => response.json()) as DayType;
-      this.hasFetched = true;
-      this.body = this.getBody(this.dayType.has_school);
-
     }
   },
-  created() {
-    this.body = this.getBody(true)
-  },
-  beforeMount() {
-    this.fetchData();
+  async fetch() {
+    this.dayType = await fetch(`https://whatdayisittomorrow.com/api/v1/dates/${this.$props.date.toISOString().substring(0, 10)}`).then(response => response.json()) as DayType;
+    this.body = this.getBody();
   }
 })
 </script>
 
-<style scoped>
-
-</style>

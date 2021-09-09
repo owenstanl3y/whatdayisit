@@ -6,7 +6,7 @@ import router from './router'
 const app = express()
 
 app.use(bodyParser.json())
-app.use('/admin', async function checkUser(req, res, next) {
+app.use('/admin', async function(req, res, next) {
   const apiKey = req.query.api_key;
   if(!apiKey){
     return res.status(400).send({
