@@ -8,10 +8,16 @@ const cache = new Cache(28000);
 router.get('/dates/:date', (req, res) => {
   const query = `SELECT * FROM dates WHERE date = "${req.params.date}"`;
   cache.get(query)
-    .then(date => res.json(date[0]))
+    .then(date => {
+      if (date[0].length > 1) {
+        res.json(date[0])
+      } else {
+        res.json({'date': req.params.date})
+      }
+    })
     .catch(error => {
       res.status(402)
-      res.json(error)
+      res.json({'date': req.params.date})
     })
 });
 

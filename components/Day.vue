@@ -46,10 +46,10 @@ export default Vue.extend({
       let s = rD.toLocaleDateString( "locale", { weekday: 'long' }) + " the " + this.dateOrdinal(rD.getDate()) + " of " + rD.toLocaleDateString( "locale", { month: 'long' });
       if (rD.getDay() === 6 || rD.getDay() === 0) {
         s += " is a weekend enjoy!"
-      } else if (!this.dayType.has_school) {
-        s += " there's no school!"
-      } else if (this.dayType.normal) {
+      } else if (this.dayType.normal != null && this.dayType.normal) {
         s += ` is a ${this.dayType.type} day`;
+      } else if (this.dayType.has_school != null && !this.dayType.has_school) {
+        s += " there's no school!"
       }
       return s;
     },
