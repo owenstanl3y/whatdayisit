@@ -9,15 +9,16 @@ router.get('/dates/:date', (req, res) => {
   const query = `SELECT * FROM dates WHERE date = "${req.params.date}"`;
   cache.get(query)
     .then(date => {
-      if (date[0].length > 1) {
+      if (date[0]) {
         res.json(date[0])
       } else {
-        res.json({'date': req.params.date})
+        guessDay(new Date(req.params.date)).then(d => res.json(d))
       }
     })
     .catch(error => {
+      console.log(error)
       res.status(402)
-      res.json({'date': req.params.date})
+      res.json(error)
     })
 });
 
@@ -30,6 +31,18 @@ router.get('/dates', (req, res) => {
       res.json(error)
     })
 });
+
+async function guessDay(date: Date): Promise<DayType> {
+  const query = `SELECT * FROM dates WHERE has_school=1 AND normal=1 ORDER BY date DESC LIMIT 1`;
+  let d = await cache.get(query).then(date => date[0]) as DayType
+  d.extra = true;
+  d.comment = `This is a guess, using data from the last known date`
+  d.date = date.toISOString().substring(0, 10)
+  return d
+
+
+
+}
 
 router.get('/admin/cache/stats', (req, res) => {
   res.send(cache.dbcache.stats)
@@ -84,4 +97,3 @@ router.get('/admin/tokens', (req, res) => {
 });
 
 export default router;
-
