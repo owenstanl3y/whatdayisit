@@ -58,7 +58,11 @@ export default Vue.extend({
     }
   },
   async fetch() {
-    this.dayType = await fetch(`https://whatdayisittomorrow.com/api/v1/dates/${this.$props.date.toISOString().substring(0, 10)}`).then(response => response.json()) as DayType;
+    try {
+      this.dayType = await fetch(`https://whatdayisittomorrow.com/api/v1/dates/${this.$props.date.toISOString().substring(0, 10)}`).then(response => response.json()) as DayType;
+    } catch (e) {
+      console.log(e)
+    }
     this.body = this.getBody();
   }
 })
