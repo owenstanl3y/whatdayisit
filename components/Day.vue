@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col justify-center bg-red-300 w-full m-4 p-2.5 text-center rounded-md md:w-96 lg:w-80 xl:w-64 text-coolGray-100 shadow-md transform duration-500 hover:-translate-y-1">
-    <h1 class="text-lg "> {{ getTop() }}</h1>
+    <h1 class="text-xl "> {{ getTop() }}</h1>
     <h2 >
       {{ body }}
     </h2>
-    <h3 class="border-gray-500" v-if="dayType.extra"> {{ dayType.comment }} </h3>
+    <h3 class="border-gray-500 text-sm " v-if="dayType.extra"> {{ dayType.comment }} </h3>
   </div>
 </template>
 

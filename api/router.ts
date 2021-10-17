@@ -33,11 +33,22 @@ router.get('/dates', (req, res) => {
 });
 
 async function guessDay(date: Date): Promise<DayType> {
+  if (date.getDay() > 5) {
+    return {
+      comment: '',
+      date: date.toISOString().substring(0, 10),
+      extra: false,
+      has_school: false,
+      normal: true,
+      type: '',
+    }
+  }
   const query = `SELECT * FROM dates WHERE has_school=1 AND normal=1 ORDER BY date DESC LIMIT 1`;
-  let d = await cache.get(query).then(date => date[0]) as DayType
+  let d = await cache.get(query).then(date => date[0]) as DayType;
   d.extra = true;
-  d.comment = `This is a guess, using data from the last known date`
-  d.date = date.toISOString().substring(0, 10)
+  d.comment = `This is a guess, using data from the last known date`;
+  d.type = d.type = "even" ? "odd" : "even";
+  d.date = date.toISOString().substring(0, 10);
   return d
 
 

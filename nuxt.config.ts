@@ -17,7 +17,7 @@ export default <NuxtConfig> {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'What school day is it' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
     ]
   },
 
@@ -40,6 +40,8 @@ export default <NuxtConfig> {
     '@nuxtjs/tailwindcss',
 
     '@nuxtjs/dotenv',
+
+    '@nuxtjs/google-fonts'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -48,6 +50,17 @@ export default <NuxtConfig> {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extractCSS: true,
+    publicPath: 'https://assets.whatdayisittomorrow.com/',
+    filenames: {
+      app: ({ isDev, isModern }) => isDev ? `[name]${isModern ? '.modern' : ''}.js` : `js/[contenthash:7]${isModern ? '.modern' : ''}.js`,
+      chunk: ({ isDev, isModern }) => isDev ? `[name]${isModern ? '.modern' : ''}.js` : `js/[contenthash:7]${isModern ? '.modern' : ''}.js`,
+      css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash:7].css',
+      img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[contenthash:7].[ext]',
+      font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[contenthash:7].[ext]',
+      video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[contenthash:7].[ext]'
+    }
+
   },
 
   serverMiddleware: [
@@ -56,6 +69,12 @@ export default <NuxtConfig> {
     { path: '/api/v1', handler: '~/api/app.ts' },
 
   ],
+
+  modern: true,
+
+  googleFonts: {
+    Lato: true
+  }
 
 
 }
