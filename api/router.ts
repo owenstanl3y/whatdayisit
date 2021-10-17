@@ -33,7 +33,7 @@ router.get('/dates', (req, res) => {
 });
 
 async function guessDay(date: Date): Promise<DayType> {
-  if (date.getDay() > 5) {
+  if (date.getDay() === 6 || date.getDay() === 0) {
     return {
       comment: '',
       date: date.toISOString().substring(0, 10),
